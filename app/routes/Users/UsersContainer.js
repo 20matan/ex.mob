@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import Expo from 'expo'
 import UserCard from '../../components/UserCard'
 import usersData from '../../data/users_data.json'
@@ -19,18 +19,23 @@ class UsersContainer extends Component {
 
   state = {
     users: usersData.slice(0, NUM_OF_USERS_EACH_FETCH),
-    refreshing: false
+    refreshing: false,
+    fetchingMore: true,
   }
 
   _fetchMore = () => {
     const currentUsersLength = this.state.users.length
-    console.log('length', currentUsersLength);
-    const users = [
-      ...this.state.users,
-      ...usersData.slice(currentUsersLength, currentUsersLength+NUM_OF_USERS_EACH_FETCH)
-    ]
 
-    this.setState({ users })
+    if (currentUsersLength < usersData.length) {
+      this.setState({ fetchingMore: true })
+      const users = [
+        ...this.state.users,
+        ...usersData.slice(currentUsersLength, currentUsersLength+NUM_OF_USERS_EACH_FETCH)
+      ]
+
+      this.setState({ users, fetchingMore: false })
+
+    }
 
   }
 
@@ -62,6 +67,13 @@ class UsersContainer extends Component {
           }
           keyExtractor={this._keyExtractor}
           onEndReached={this._fetchMore}
+          ListFooterComponent={() => {
+            if (this.state.fetchingMore)
+              return (
+                <ActivityIndicator />
+              )
+            return null
+          }}
         />
       </View>
     );
