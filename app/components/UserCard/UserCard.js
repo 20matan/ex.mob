@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   viewUserDetails: {
-    // justifyContent: 'center',
     marginLeft: 10,
     flex: 1,
   },
@@ -47,11 +46,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 3,
     paddingHorizontal: 8,
-    // ...Platform.select({
-    //   ios: {
-    //     shadowColor: ''
-    //   }
-    // })
   },
 
   textFirstName: {
